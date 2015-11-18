@@ -1,4 +1,11 @@
+# R
 .Rproj.user
 .Rhistory
 .RData
 .checkpoint
+
+# Archives
+*.zip
+
+# Data
+*.csv
