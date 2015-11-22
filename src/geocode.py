@@ -7,9 +7,16 @@ import os
 
 requests.packages.urllib3.disable_warnings()
 
+def get_googlemaps_secret():
+    key = os.environ['GOOGLE_MAPS_SECRET']
+    if (key is not None) and (key != ""):
+        return key
+    else:
+        raise ValueError("ENV variable 'GOOGLE_MAPS_SECRET' not set")
+
 def geocode(address):
     url = 'https://maps.googleapis.com/maps/api/geocode/json'
-    params = {'sensor': 'false', 'address': address, 'key': os.environ['GOOGLE_MAPS_SECRET']}
+    params = {'sensor': 'false', 'address': address, 'key': get_googlemaps_secret()}
     r = requests.get(url, params=params)
     results = r.json()['results']
     location = results[0]['geometry']['location']
@@ -56,8 +63,7 @@ def geocode_from_file(infname, outfname):
             latlong = try_geocode(address)
             lat = latlong[0]
             lng = latlong[1]
-            line = "\"{}\", {}, {}, {}\n".format(address, lat, lng, i)
-            print line
+            line = "\"{}\", {}, {}\n".format(address, lat, lng)
             g.write(line)
             g.flush()
             i += 1 

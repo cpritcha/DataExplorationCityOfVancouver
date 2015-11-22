@@ -1,0 +1,72 @@
+library(dplyr)
+
+load("data/allyears.RData")
+
+source("src/utils.R")
+
+# Create subset of all data that has a street address with the correct status
+all_data <- stacked_df %>%
+  filter(year %in% YEARS) %>%
+  filter(Status %in% STATUSES) %>%
+  filter(Street != "") %>%
+  mutate(address = make_address(House, Street)) %>%
+  distinct(LicenceRSN)
+
+# Bring in dist data within 1km of Canada line 
+# Remove duplicate RSNs (RSN is supposed to be unique... and it almost is except for 8 rows)
+# Duplicate RSNs have the same address and business looks the same but have spelling mistakes
+canada_line <- read.csv("data/dist.csv", stringsAsFactors = F) %>%
+  distinct(LicenceRSN)
+
+# Create a dataset combining the two
+
+residential_categories <- c(
+  "Apartment House",
+  "Apartment House-99 Year Lease",
+  "Apartment House Strata",
+  "Artist Live/Work Studio",
+  "Bed and Breakfast",
+  "Duplex",
+  "Hotel",
+  "Motel",
+  "Multiple Dwelling",
+  "Non-profit Housing",
+  "Personal Care Home",
+  "Pre-1956 Dwelling ",
+  "Residential/Commercial",
+  "Rooming House",
+  "Secondary Suite - Permanent")
+
+disposable_categories <- c(
+  "Club", 
+  "Dining Lounge *Historic*",
+  "Liquor Establishment Extended",
+  "Liquor Establishment Standard",
+  "Liquor Retail Store",
+  "Ltd Service Food Establishment",
+  "Restaurant Class 1",
+  "Restaurant Class 2",
+  "Retail Dealer",
+  "Retail Dealer - Food",
+  "Retail Dealer - Grocery",
+  "Retail Dealer - Market Outlet")
+
+
+all_data_with_canada_line <- all_data %>%
+  left_join(canada_line, 
+            by = c("LicenceRSN", 
+                   "BusinessType" = "BusinessTy", 
+                   "year", 
+                   "address")) %>%
+  select(LicenceRSN, 
+         BusinessType, 
+         Address = address,
+         Latitude = Latitude.y, 
+         Longitude = Longitude.y,
+         StationName = stat_name,
+         DistToTracks = d_to_track,
+         DistToStation = d_to_stat) %>%
+  mutate(IsResidential = BusinessType %in% residential_categories,
+         IsDisposable = BusinessType %in% disposable_categories)
+
+write.csv(all_data_with_canada_line, file="data/complete.txt", row.names = F)
