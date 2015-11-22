@@ -1,0 +1,52 @@
+---
+title: "Exploration"
+output: html_document
+---
+
+
+
+```{r mean_fee_paid_over_time, echo=FALSE, message=FALSE}
+library(knitr)
+library(dplyr)
+library(ggvis)
+# ave_price_by_area_by_time
+load("../data/allyears.RData")
+stacked_df %>%
+  group_by(LocalArea, year) %>%
+  filter(LocalArea != "") %>%
+  summarize(AveFeePaid = mean(FeePaid, na.rm=TRUE)) %>%
+  ggvis(y = ~AveFeePaid, x = ~year, stroke = ~factor(LocalArea)) %>%
+  layer_lines() %>%
+  add_legend(scales="stroke", title="LocalArea")
+```
+
+The price by area over time plot shows that the mean price for a business licence is much higher in WestEnd than the rest of Vancouver
+
+```{r}
+stacked_df %>%
+  filter(year==1997) %>%
+  group_by(Status) %>%
+  ggvis(x = ~factor(Status))
+
+stacked_df %>%
+  filter(year==2009) %>%
+  group_by(Status) %>%
+  ggvis(x = ~factor(Status))
+
+stacked_df %>%
+  filter(year==2014) %>%
+  group_by(Status) %>%
+  ggvis(x = ~factor(Status))
+```
+
+I do not see anything interesting in the Status variable.
+
+```{r}
+stacked_df %>%
+  group_by(BusinessType) %>%
+  summarize(nb=length(BusinessName)) %>%
+  top_n(n=20, wt=nb) %>%
+  kable()
+```
+
+SkyTrain before and after Canada Line
