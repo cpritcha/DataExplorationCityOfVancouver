@@ -123,8 +123,15 @@ hold <- factor(data02S.D$BusinessType)
 #################################
 
 
-# Plotting goes here
+# frequency tables
 
+table02S.D <- as.data.frame(table(data02S.D$BusinessType))
+table08S.D <- as.data.frame(table(data08S.D$BusinessType))
+table14S.D <- as.data.frame(table(data14S.D$BusinessType))
+
+# Can be Viewed and plotted
+View(table02S.D)
+plot(table02S.D)
 
 
 ##### General exploration #########
