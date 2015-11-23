@@ -47,13 +47,13 @@ disposable_categories <- c(
   "Retail Dealer - Grocery",
   "Retail Dealer - Market Outlet")
 
-
 all_data_with_canada_line <- all_data %>%
   filter(Street != "") %>%
   filter(Status %in% STATUSES) %>%
-  left_join(canada_line, 
+  full_join(canada_line, 
             by = c("id")) %>%
   mutate(address = make_address(House, Street)) %>%
+  distinct(LicenceRSN.x) %>%
   select(ID = id,
          Year = year.x,
          Status,
