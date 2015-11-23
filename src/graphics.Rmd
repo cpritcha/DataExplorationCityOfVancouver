@@ -1,0 +1,54 @@
+---
+title: "Exploration"
+output: html_document
+---
+
+
+
+```{r mean_fee_paid_over_time, echo=FALSE, message=FALSE}
+library(knitr)
+library(dplyr)
+library(ggvis)
+library(stringr)
+# ave_price_by_area_by_time
+data <- read.csv("data/complete.txt")
+southen_stations <- c(
+  "OAKRIDGE-\\n41st. AVE.",
+  "LANGARA-\\n49th AVE.",
+  "MARINE DRIVE"
+)
+ss_data <- data %>%
+  filter(StationName %in% southen_stations) %>%
+  mutate(AggBusinessType = 
+           factor(ifelse(IsResidential, 
+                  "Residential and Accomodation",
+                  ifelse(IsDisposable,
+                         "Food and Drink",
+                         NA)))) %>%
+  filter(!is.na(AggBusinessType)) %>%
+  mutate(AggBusinessTypeYear = str_c(AggBusinessType, ", ", Year)) %>%
+  group_by(AggBusinessType, Year) %>%
+  mutate(CDistToStation = cume_dist(DistToStation),
+         RDistToStation = rank(DistToStation),
+         CDistToTracks = cume_dist(DistToTracks),
+         RDistToTracks = rank(DistToTracks)) %>%
+  arrange(AggBusinessType, Year, CDistToStation)
+
+# Southern Stations - Station Distance
+ss_data %>%
+  ggvis( ~DistToStation, ~CDistToStation, stroke = ~AggBusinessTypeYear) %>%
+  group_by(AggBusinessTypeYear) %>%
+  layer_lines() %>%
+  add_axis("x", title = "Distance from Nearest Station (m)") %>%
+  add_axis("y", title = "Cumulative Business Permits") %>%
+  add_legend(scales = "stroke", title = "Business Licences")
+
+# Southern Stations - Track Distance
+ss_data %>%
+  ggvis( ~DistToTracks, ~CDistToTracks, stroke = ~AggBusinessTypeYear) %>%
+  group_by(AggBusinessTypeYear) %>%
+  layer_lines() %>%
+  add_axis("x", title = "Distance from Tracks (m)") %>%
+  add_axis("y", title = "Cumulative Business Permits") %>%
+  add_legend(scales = "stroke", title = "Business Licences")
+```
