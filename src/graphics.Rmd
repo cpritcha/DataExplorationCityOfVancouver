@@ -36,7 +36,7 @@ ss_data <- data %>%
 
 # Southern Stations - Station Distance
 ss_data %>%
-  ggvis( ~DistToStation, ~CDistToStation, stroke = ~AggBusinessTypeYear) %>%
+  ggvis( ~DistToStation, ~RDistToStation, stroke = ~AggBusinessTypeYear) %>%
   group_by(AggBusinessTypeYear) %>%
   layer_lines() %>%
   add_axis("x", title = "Distance from Nearest Station (m)") %>%
@@ -45,7 +45,7 @@ ss_data %>%
 
 # Southern Stations - Track Distance
 ss_data %>%
-  ggvis( ~DistToTracks, ~CDistToTracks, stroke = ~AggBusinessTypeYear) %>%
+  ggvis( ~DistToTracks, ~RDistToTracks, stroke = ~AggBusinessTypeYear) %>%
   group_by(AggBusinessTypeYear) %>%
   layer_lines() %>%
   add_axis("x", title = "Distance from Tracks (m)") %>%
@@ -71,7 +71,7 @@ not_ss_data <- data %>%
 
 # Other Stations
 not_ss_data %>%
-  ggvis( ~DistToStation, ~CDistToStation, stroke = ~AggBusinessTypeYear) %>%
+  ggvis( ~DistToStation, ~RDistToStation, stroke = ~AggBusinessTypeYear) %>%
   group_by(AggBusinessTypeYear) %>%
   layer_lines() %>%
   add_axis("x", title = "Distance from Nearest Station (m)") %>%
@@ -81,7 +81,7 @@ not_ss_data %>%
 
 # Other Stations - Track Distance
 not_ss_data %>%
-  ggvis( ~DistToTracks, ~CDistToTracks, stroke = ~AggBusinessTypeYear) %>%
+  ggvis( ~DistToTracks, ~RDistToTracks, stroke = ~AggBusinessTypeYear) %>%
   group_by(AggBusinessTypeYear) %>%
   layer_lines() %>%
   add_axis("x", title = "Distance from Tracks (m)") %>%
