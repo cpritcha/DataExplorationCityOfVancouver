@@ -51,4 +51,40 @@ ss_data %>%
   add_axis("x", title = "Distance from Tracks (m)") %>%
   add_axis("y", title = "Cumulative Business Permits") %>%
   add_legend(scales = "stroke", title = "Business Licences")
+
+not_ss_data <- data %>%
+  filter(!(StationName %in% southen_stations) & !is.na(StationName)) %>%
+  mutate(AggBusinessType = 
+           factor(ifelse(IsResidential, 
+                  "Residential and Accomodation",
+                  ifelse(IsDisposable,
+                         "Food and Drink",
+                         NA)))) %>%
+  filter(!is.na(AggBusinessType)) %>%
+  mutate(AggBusinessTypeYear = str_c(AggBusinessType, ", ", Year)) %>%
+  group_by(AggBusinessType, Year) %>%
+  mutate(CDistToStation = cume_dist(DistToStation),
+         RDistToStation = rank(DistToStation),
+         CDistToTracks = cume_dist(DistToTracks),
+         RDistToTracks = rank(DistToTracks)) %>%
+  arrange(AggBusinessType, Year, CDistToStation)
+
+# Other Stations
+not_ss_data %>%
+  ggvis( ~DistToStation, ~CDistToStation, stroke = ~AggBusinessTypeYear) %>%
+  group_by(AggBusinessTypeYear) %>%
+  layer_lines() %>%
+  add_axis("x", title = "Distance from Nearest Station (m)") %>%
+  add_axis("y", title = "Cumulative Business Permits") %>%
+  add_legend(scales = "stroke", title = "Business Licences")
+
+
+# Other Stations - Track Distance
+not_ss_data %>%
+  ggvis( ~DistToTracks, ~CDistToTracks, stroke = ~AggBusinessTypeYear) %>%
+  group_by(AggBusinessTypeYear) %>%
+  layer_lines() %>%
+  add_axis("x", title = "Distance from Tracks (m)") %>%
+  add_axis("y", title = "Cumulative Business Permits") %>%
+  add_legend(scales = "stroke", title = "Business Licences")
 ```
