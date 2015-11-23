@@ -6,12 +6,8 @@ source("src/utils.R")
 
 # Create subset of all data that has a street address with the correct status
 all_data <- stacked_df %>%
-  filter(year %in% YEARS) %>%
-  filter(Status %in% STATUSES) %>%
-  filter(Street != "") %>%
-  mutate(address = make_address(House, Street)) %>%
-  distinct(LicenceRSN)
-
+  filter(year %in% YEARS)
+  
 # Bring in dist data within 1km of Canada line 
 # Remove duplicate RSNs (RSN is supposed to be unique... and it almost is except for 8 rows)
 # Duplicate RSNs have the same address and business looks the same but have spelling mistakes
@@ -53,20 +49,26 @@ disposable_categories <- c(
 
 
 all_data_with_canada_line <- all_data %>%
+  filter(Street != "") %>%
+  filter(Status %in% STATUSES) %>%
   left_join(canada_line, 
-            by = c("LicenceRSN", 
-                   "BusinessType" = "BusinessTy", 
-                   "year", 
-                   "address")) %>%
-  select(LicenceRSN, 
+            by = c("id")) %>%
+  mutate(address = make_address(House, Street)) %>%
+  select(ID = id,
+         Year = year.x,
+         Status,
+         LicenceRSN = LicenceRSN.x, 
          BusinessType, 
          Address = address,
          Latitude = Latitude.y, 
          Longitude = Longitude.y,
-         StationName = stat_name,
+         StationName = join_Name,
          DistToTracks = d_to_track,
          DistToStation = d_to_stat) %>%
   mutate(IsResidential = BusinessType %in% residential_categories,
          IsDisposable = BusinessType %in% disposable_categories)
 
 write.csv(all_data_with_canada_line, file="data/complete.txt", row.names = F)
+
+different <- all_data_with_canada_line %>%
+  anti_join(all_data, by = c("id"))

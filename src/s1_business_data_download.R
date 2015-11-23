@@ -85,6 +85,10 @@ stack <- function() {
   dfs <- load_datasets()
   new_dfs <- add_years(dfs)
   stacked_df <- bind_rows(new_dfs)
+  stacked_df$id <- 1:nrow(stacked_df)
   #save(stacked_df, file = "data/allyears.RData")
   stacked_df
 }
+
+stacked_df$id <- 1:nrow(stacked_df)
+save(stacked_df, file = "data/allyears.RData")

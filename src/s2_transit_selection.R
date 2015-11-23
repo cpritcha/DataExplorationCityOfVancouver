@@ -22,7 +22,7 @@ df <- stacked_df %>%
 
 # subset data to the area around the site 
 before_and_after <- df %>%
-  filter(year == 2002 | year == 2008 | year == 2014) %>%
+  filter(year %in% YEARS) %>%
   filter(Areas %in% areas)
 
 save(before_and_after, file = "data/stage2.RData")
