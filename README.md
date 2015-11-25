@@ -41,13 +41,13 @@ pip install -r requirements.txt
 
   (with the `virtualenv` activated). The output file `geocoded_02_08_14.txt` is imported in the next step.
 5. Run `s3_import_geocoded.R`
-6. Perform instructions from the *Reproduce the Maps* section
+6. Perform instructions from the *Prepare the Spatial data* section
 7. Run `s4_combine_geocoded_with_rest_of_data.R`
 
-Run `s5_graphics.Rmd` for the report graphics and
-`s5_graphics.R` for the presentation graphics
+Run `s5_graphics.Rmd` for the report graphics, `s5_table.R` for the table
+statistics and `s5_graphics.R` for the presentation graphics
 
-## Reproduce the Maps
+## Prepare the Spatial data
 
 Additional datasets required:
 
@@ -91,3 +91,11 @@ Select business licences from `Stage3` that interesect `CanLineBuffer` and call 
 1. Use NNJoin (input layer: `Stage3InBuffer` and join layer `CanLine`). Use Table Manager to delete all columns beginning with "join_", rename the "distance" column to "d_to_track" and call the output `Part2Stage3InBuffer`
 2. Use NNJoin (input layer: `Part2Stage3InBuffer` and join layer `CanStaions`). Use Table Manager to delete all columns beginning with "join_", rename the "distance" column to "d_to_track" and call the output `Part3Stage3InBuffer`
 3. Export `Part3Stage3InBuffer` as a csv file (call it `dist.csv` and place it in the `data` directory for use in step 7 of the reproduce the graphs section)
+
+## Create Maps
+
+1. Import `data/complete.txt` into QGIS and reproject it UTM Z10N (call it `BusinessLicences`)
+2. Add styles to `BusinessLicences`, `CanLineBuffer`, `CanStations` and `CanLine` to match the
+  final maps shown in the `graphics` directory.
+3. Use QGIS print composer to add the scale bars and projection information export the results
+  filtering the `BusinessLicenses` layer to the year 2002 and 2014 respectively.
