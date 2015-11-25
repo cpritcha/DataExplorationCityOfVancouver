@@ -1,4 +1,6 @@
-# Data Exploration for City of Vancouver Data
+# Canada Line Development
+
+The development of the area around Canada Line is explored by looking at the number of business licences issued at different areas along the track over time.
 
 ## Software Used
 
