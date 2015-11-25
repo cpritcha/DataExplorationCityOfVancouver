@@ -1,3 +1,5 @@
+# stage 4: intergrate data with distance to nearest station and distance to tracks
+#   with the rest of the data
 library(dplyr)
 
 load("data/allyears.RData")
@@ -69,6 +71,3 @@ all_data_with_canada_line <- all_data %>%
          IsDisposable = BusinessType %in% disposable_categories)
 
 write.csv(all_data_with_canada_line, file="data/complete.txt", row.names = F)
-
-different <- all_data_with_canada_line %>%
-  anti_join(all_data, by = c("id"))

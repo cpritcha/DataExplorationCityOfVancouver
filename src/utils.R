@@ -1,6 +1,5 @@
 library(stringr)
 
-# geocode the missing lat longs
 make_address <- function(house_number, street) {
   ifelse(street != "",
          str_c(house_number, " ", street, ", Vancouver, BC"),

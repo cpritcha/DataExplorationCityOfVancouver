@@ -1,10 +1,12 @@
+# stage 5: extract statistics for the table in the report
+
 ##################################################################################
 # This takes the complete data, and seperates them first by year,
 # then by whether they are close to the station or not
-# and finally into whether they are Residential, Disposable, or Other type
+# and finally into whether they are Residential, Food and Drink (Disposable Income), or Other type
 
 # BussinessType has 181 levels in the complete data set, I remove the 
-# ones that are not relevant in Res, Dis, and Other in the final seperation step
+# ones that are not relevant in Res, Food, and Other in the final seperation step
 # This allows for easier graph production
 
 # Using the last year * close to station * Res, Dis, Other = 3 * 2 * 3 = 12

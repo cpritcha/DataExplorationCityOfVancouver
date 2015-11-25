@@ -70,7 +70,8 @@ def geocode_from_file(infname, outfname):
 
 if __name__=="__main__":
     if len(sys.argv) != 3:
-        print "n args must be 2"
+        print "n args must be 2:"
+        print "./geocode.py infile outfile"
 
     infname = sys.argv[1]
     outfname = sys.argv[2]

@@ -1,5 +1,4 @@
 # stage 3: create a dataset to calculate distance from Canada line with
-# make a new datset from the geocoded data
 load("data/stage2.RData")
 
 source("src/utils.R")
@@ -8,6 +7,7 @@ source("src/utils.R")
 missing_geocoded_df <- read.csv("data/geocoded_02_08_14.txt", 
                         head=F, col.names = c("address", "lat", "lng"), stringsAsFactors = F)
 
+# make a new datset from the geocoded data
 data_02_08_14 <- before_and_after %>%
   filter(Street != "") %>%
   mutate(address = make_address(House, Street)) %>%

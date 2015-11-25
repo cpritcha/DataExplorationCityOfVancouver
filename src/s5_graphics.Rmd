@@ -5,7 +5,8 @@ output: html_document
 
 
 
-```{r mean_fee_paid_over_time, echo=FALSE, message=FALSE}
+```{r distance_analysis, echo=FALSE, message=FALSE}
+# Graphics for the Report
 library(knitr)
 library(dplyr)
 library(ggvis)
