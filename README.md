@@ -89,7 +89,7 @@ Select business licences from `Stage3` that interesect `CanLineBuffer` and call 
 ### Calculate the Distance to Station and Tracks (Requires the NNJoin and Table Manager plugins)
 
 1. Use NNJoin (input layer: `Stage3InBuffer` and join layer `CanLine`). Use Table Manager to delete all columns beginning with "join_", rename the "distance" column to "d_to_track" and call the output `Part2Stage3InBuffer`
-2. Use NNJoin (input layer: `Part2Stage3InBuffer` and join layer `CanStaions`). Use Table Manager to delete all columns beginning with "join_", rename the "distance" column to "d_to_track" and call the output `Part3Stage3InBuffer`
+2. Use NNJoin (input layer: `Part2Stage3InBuffer` and join layer `CanStaions`). Use Table Manager to delete all columns beginning with "join_", rename the "distance" column to "d_to_stat" and call the output `Part3Stage3InBuffer`
 3. Export `Part3Stage3InBuffer` as a csv file (call it `dist.csv` and place it in the `data` directory for use in step 7 of the reproduce the graphs section)
 
 ## Create Maps
