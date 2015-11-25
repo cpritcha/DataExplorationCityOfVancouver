@@ -1,4 +1,0 @@
-X, Y - UTM Z10N coordinates (in metres)
-distance_to_station - distance in metres to nearest Canada line station
-distance_to_tracks - distance to Canada line tracks 
-Latitude, Longitude - coordinates
